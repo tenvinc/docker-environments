@@ -1,0 +1,24 @@
+version: "3"
+
+services:
+  app:
+    image: ubuntu-ros/ubuntu-ros-16-04:latest
+    network_mode: "host"
+    build:
+        context: .
+        dockerfile: Dockerfile
+    environment:
+      - DISPLAY=$DISPLAY
+      - QT_X11_NO_MITSHM=1
+      - XAUTHORITY=/tmp/.docker.xauth
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+    runtime: nvidia
+    volumes:
+      # X11 Forwarding
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /.tmp/.docker.xauth:/tmp/.docker.xauth:rw
+      # - /tmp/.X11-unix:/tmp/.X11-unix
+      - ./mount/:/home/tenvinc/external
+    network_mode: host
+    tty: true           # <-- This option
